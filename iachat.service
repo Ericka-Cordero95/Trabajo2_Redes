@@ -1,0 +1,20 @@
+[Unit]
+Description=Chat IA local
+RequiresMountsFor=/srv/ia
+After=ollama.service
+Wants=ollama.service
+[Service]
+User=iachat
+Group=iachat
+WorkingDirectory=/opt/iachat
+EnvironmentFile=/etc/iachat/env
+ExecStart=/usr/bin/gunicorn --bind 127.0.0.1:8000 --workers 1 --threads 2 --timeout 100 --access-logfile - app:app
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/srv/ia/db
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
