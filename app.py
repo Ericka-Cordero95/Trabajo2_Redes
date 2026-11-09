@@ -28,7 +28,9 @@ PAGE = """
 <style>body{font:17px system-ui;max-width:760px;margin:40px auto;padding:16px}
 article{background:#eef3f8;padding:16px;margin:12px 0;white-space:pre-wrap}
 textarea{width:100%;min-height:80px}input,button{padding:8px;margin:4px}</style>
-<h1>Asistente local</h1>{{ message }}
+<h1>Asistente local</h1>
+{% if model.startswith('llama') %}<p><small>Built with Llama</small></p>{% endif %}
+{{ message }}
 {% if not user %}
 <form method=post><input name=name required placeholder=Usuario autocomplete=username>
 <input type=password name=password required autocomplete=current-password>
@@ -53,7 +55,7 @@ textarea{width:100%;min-height:80px}input,button{padding:8px;margin:4px}</style>
 
 def view(user=None, rows=(), message="", admin=False, total=0):
     return render_template_string(PAGE, user=user, rows=rows, message=message,
-                                  admin=admin, total=total,
+                                  admin=admin, total=total, model=os.environ["CHAT_MODEL"],
                                   token=session.setdefault("csrf", secrets.token_urlsafe(32)))
 
 @app.before_request

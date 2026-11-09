@@ -1,6 +1,8 @@
 # Trabajo 2 · ISW-612
 
-El proyecto corresponde a la opción A. Para la demostración en la VM instalada, consulte [DEMO.md](DEMO.md). Los resultados observados y los archivos de evidencia acompañan el informe de entrega.
+El proyecto corresponde a la opción A. Consulte [los resultados medidos](RESULTADOS.md) y la [guía de la demo](DEMO.md). El informe y el paquete de evidencia contienen las respuestas y salidas completas.
+
+El modelo configurado es Llama 3.2 1B. Se descarga desde Ollama al desplegar y se ejecuta en la CPU de la VM. Consulte la [licencia comunitaria de Llama 3.2](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE) y su política de uso antes de redistribuir el modelo.
 
 ## Instalación en la VM propia
 
@@ -14,7 +16,7 @@ El proyecto corresponde a la opción A. Para la demostración en la VM instalada
 
 ## Pruebas
 
-- Desde Windows, escanear solo el anfitrión local antes y después con `nmap -Pn -p 22,80,443,2222,8000,11434 127.0.0.1`. Con NAT se espera 2222 en el host y 22 en la VM. Probar `curl.exe --connect-timeout 3 http://127.0.0.1:11434/api/tags`. Contrastar con `sudo ss -lntp` dentro de Ubuntu.
+- Instalar Nmap en Ubuntu con `sudo apt install nmap`. Comparar antes y después con `nmap -sT -Pn -n -p 22,80,443,8000,11434 10.0.2.15` si esa es la IP de la VM. Desde Windows, verificar el extremo local de NAT con `nmap -sT -Pn -n -p 80,443,2222,8000,11434 127.0.0.1`. Probar `curl.exe --connect-timeout 3 http://127.0.0.1:11434/api/tags`. Contrastar con `sudo ss -lntp` dentro de Ubuntu.
 - Guardar `sudo ufw status verbose`, `sudo fail2ban-client status sshd`, `findmnt /srv/ia`, `ls -ld /srv/ia/{models,db,backups}` y `ps -eo user,pid,args`. Reiniciar la VM y verificar servicios y montaje.
 - Probar SSH con `ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password -p 2222 ericka@127.0.0.1`. Para fail2ban repetir autenticaciones con una llave de prueba no autorizada y observar el bloqueo desde la consola. Si NAT agrupa las conexiones, desbloquear desde consola la IP observada con `sudo fail2ban-client set sshd unbanip IP`.
 - Revisar `curl.exe -I http://localhost` y `curl.exe -kI https://localhost`. Verificar con el navegador y comprobar TLS 1.2 o 1.3. Enviar una ráfaga de GET y registrar 429. Separar esta prueba de cinco logins incorrectos seguidos de un sexto intento en el formulario.

@@ -37,7 +37,7 @@ if ! systemctl cat ollama.service >/dev/null 2>&1; then
 fi
 install -m 644 iachat.service /etc/systemd/system/
 if [[ ! -f /etc/iachat/env ]]; then
-    (umask 077; printf 'SESSION_KEY=%s\nCHAT_MODEL=qwen2.5:1.5b\n' "$(openssl rand -hex 32)" > /etc/iachat/env)
+    (umask 077; printf 'SESSION_KEY=%s\nCHAT_MODEL=llama3.2:1b\n' "$(openssl rand -hex 32)" > /etc/iachat/env)
 fi
 if [[ ! -f /etc/iachat/tls.key || ! -f /etc/iachat/tls.crt ]]; then
     (umask 077; openssl req -x509 -newkey rsa:3072 -nodes -days 365 -subj /CN=localhost -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1' -keyout /etc/iachat/tls.key -out /etc/iachat/tls.crt)
