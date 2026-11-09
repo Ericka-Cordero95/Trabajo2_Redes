@@ -60,7 +60,7 @@ def view(user=None, rows=(), message="", admin=False, total=0):
 def csrf():
     if request.method == "POST":
         expected = session.get("csrf")
-        if not expected or not secrets.compare_digest(expected, request.form.get("csrf", "").encode("utf-8").decode("ascii", "replace")):
+        if not expected or not secrets.compare_digest(expected.encode(), request.form.get("csrf", "").encode()):
             abort(403)
 
 def current(conn):
@@ -72,7 +72,7 @@ def index():
     with closing(db()) as conn:
         user = current(conn)
         if not user:
-            if request.method == "GET":
+            if request.method != "POST":
                 return view()
             ip = request.headers.get("X-Real-IP", request.remote_addr)
             with conn:

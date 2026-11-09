@@ -15,8 +15,16 @@ mountpoint -q /srv/ia || mount /srv/ia
 apt-get update
 apt-get install -y nginx ufw fail2ban python3-systemd python3-flask python3-bcrypt gunicorn sqlite3 curl openssl zstd
 if ! command -v ollama >/dev/null; then
-    curl -fsSL https://ollama.com/install.sh | sh
+    archive=$(mktemp /srv/ia/.ollama-XXXXXX.tar.zst)
+    trap 'unlink "$archive"' EXIT
+    curl -4 --fail --location --silent --show-error --retry 2 --connect-timeout 15 --max-time 1800 \
+        https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-linux-amd64.tar.zst -o "$archive"
+    printf '%s  %s\n' 628c018404a4206493efd38e46251c154ede5141b8b8dc85c659b3b027c47379 "$archive" | sha256sum -c -
+    tar --zstd -xf "$archive" -C /usr/local
+    unlink "$archive"
+    trap - EXIT
 fi
+id ollama >/dev/null 2>&1 || useradd --system --create-home --home-dir /var/lib/ollama --shell /usr/sbin/nologin ollama
 id iachat >/dev/null 2>&1 || useradd --system --shell /usr/sbin/nologin iachat
 install -d -m 750 -o iachat -g iachat /srv/ia/db
 install -d -m 750 -o ollama -g ollama /srv/ia/models
@@ -24,6 +32,9 @@ install -d -m 700 /srv/ia/backups /etc/iachat
 install -d -m 750 -g iachat /opt/iachat
 install -m 640 -g iachat app.py /opt/iachat/
 install -D -m 644 ollama.conf /etc/systemd/system/ollama.service.d/local.conf
+if ! systemctl cat ollama.service >/dev/null 2>&1; then
+    install -m 644 ollama.service /etc/systemd/system/
+fi
 install -m 644 iachat.service /etc/systemd/system/
 if [[ ! -f /etc/iachat/env ]]; then
     (umask 077; printf 'SESSION_KEY=%s\nCHAT_MODEL=qwen2.5:1.5b\n' "$(openssl rand -hex 32)" > /etc/iachat/env)

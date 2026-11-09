@@ -1,5 +1,6 @@
 import json
 import subprocess
+import sys
 import time
 import urllib.request
 
@@ -18,7 +19,7 @@ def call(endpoint, payload):
         URL + endpoint, json.dumps(payload).encode(), {"Content-Type": "application/json"}), timeout=180)
 
 for model in MODELS:
-    subprocess.run(["ollama", "pull", model], check=True)
+    subprocess.run(["ollama", "pull", model], check=True, stdout=sys.stderr)
     with urllib.request.urlopen(URL + "tags") as response:
         size = next(item["size"] for item in json.load(response)["models"] if item["name"] == model)
     for question in QUESTIONS:
@@ -27,7 +28,7 @@ for model in MODELS:
         first = None
         parts = []
         with call("generate", {"model": model, "prompt": question,
-                               "options": {"num_ctx": 2048, "num_predict": 192, "temperature": 0}}) as response:
+                               "options": {"num_ctx": 2048, "num_predict": 128, "temperature": 0}}) as response:
             for line in response:
                 result = json.loads(line)
                 if "error" in result:
