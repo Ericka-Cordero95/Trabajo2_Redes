@@ -1,0 +1,34 @@
+COMPROBACIONES DE CIERRE - ISW612
+2026-11-10T03:21:56+00:00
+--- CONFIGURACION EFECTIVA SSH ---
+maxauthtries 6
+permitrootlogin no
+pubkeyauthentication yes
+passwordauthentication no
+kbdinteractiveauthentication no
+--- FAIL2BAN: ESTADO, NO PRUEBA DE BLOQUEO NUEVA ---
+Status for the jail: sshd
+|- Filter
+|  |- Currently failed:	0
+|  |- Total failed:	0
+|  `- Journal matches:	_SYSTEMD_UNIT=sshd.service + _COMM=sshd
+`- Actions
+   |- Currently banned:	0
+   |- Total banned:	0
+   `- Banned IP list:	
+--- LOGS: CANTIDADES DE EVENTOS, SIN CONTENIDO PRIVADO ---
+315
+--- RESPALDOS DISPONIBLES: SOLO NOMBRES ---
+chat-oep8nC.tar.gz 3384 bytes
+--- ARCHIVOS DE RESULTADOS EXISTENTES: SOLO RUTAS ---
+/home/ericka/isw612/benchmark.py
+/home/ericka/isw612/RESULTADOS.md
+/home/ericka/isw612/__pycache__/benchmark.cpython-312.pyc
+/home/ericka/resultado-cierre.txt
+--- ROTACION NGINX ---
+Existe /etc/logrotate.d/nginx
+--- LIMITE NGINX: 36 GET LOCALES, MAXIMO 12 EN PARALELO ---
+200: 13 solicitudes
+429: 23 solicitudes
+La presencia de 429 confirma rechazos durante esta rafaga; su ausencia requiere revision.
+--- FIN: NO SE HAN EJECUTADO RESTAURACIONES NI PRUEBAS DE CONTRASENAS ---
