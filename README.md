@@ -354,15 +354,14 @@ El respaldo no incluye la clave privada TLS ni el archivo `/etc/iachat/env`. En 
 
 ## Documentación
 
-- [Informe PDF](docs/Informe_Trabajo2.pdf).
-- [Informe editable](docs/Informe_Trabajo2.docx).
-- [Bitácora del laboratorio](docs/Bitacora_Trabajo2_revisada.docx).
-- [Bitácora PDF](docs/Bitacora_Trabajo2_revisada.pdf).
+- [Informe técnico](Informe_Trabajo2.md).
+- [Informe editable](Informe_Trabajo2.docx).
+- [Bitácora del laboratorio](Bitacora_Trabajo2_revisada.md).
+- [Bitácora editable](Bitacora_Trabajo2_revisada.docx).
 - [Registro de uso de IA](BITACORA.md).
 - [Resultados](RESULTADOS.md).
 - [Evidencias](evidencias/).
-- [Guía para la demostración](DEMO.md).
-
+- [Guía de demostración](DEMO.md).
 ## Información privada
 
 No se incluyen contraseñas, llaves privadas, archivos de entorno, bases de datos ni respaldos con conversaciones.
